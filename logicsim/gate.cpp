@@ -88,3 +88,44 @@ Event* Or2Gate::update(uint64_t current_time)
 	}
   return e;
 }
+
+// Constructor for notgate
+NotGate::NotGate(Wire* input, Wire* output) : Gate(1, output) {
+
+  wireInput(0, input);
+
+}
+
+Event* NotGate::update(uint64_t current_time) {
+
+  // The default sign for Not Gate
+  char state = 'X';
+  Event* e = nullptr;
+
+
+  // Gets the state of the input, puts in character form
+  char i = m_inputs[0]->getState();
+
+  if (i == '0') {
+    // Flips the state if 0 to 1
+    state = '1';
+  }
+  else if (i == '1') {
+    state = '0';
+  }
+  // If its an X, stay X
+  else if (i == 'X') {
+    state = 'X';  
+  }
+
+  // Updates the current state if its changed
+  if (state!= m_current_state) {
+    m_current_state = state;
+    // Update the time
+    uint64_t nextTime = current_time + m_delay;
+    
+    //Create a new event for the notgate
+    e = new Event{nextTime, m_output, state};
+  }
+  return e;
+}

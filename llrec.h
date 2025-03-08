@@ -84,7 +84,29 @@ Node* llfilter(Node* head, Comp pred)
     // Provide your implementation below
     //*********************************************
 
+  // Base Case, if head is empty
+  if (head == nullptr) {
+    return nullptr;
+  }
 
+  
+  // Check the pred value, if it is, then remove it from the thing 
+  if (pred(head->val)) {
+    // Create a temp node
+    Node* nextNode = head->next;
+    delete head;
+    // Call recursion on the next node
+    return llfilter(nextNode, pred);
+
+  }
+
+
+  else {
+    // the next node becomes the head filter, it stays in the list
+    head->next = llfilter(head->next, pred);
+    // Return head
+    return head;
+  }
 }
 
 #endif
